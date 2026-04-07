@@ -1,4 +1,5 @@
-import jwt from "jsonwebtoken";
+import * as jsonwebtoken from "jsonwebtoken";
+const jwt = (jsonwebtoken as any).default || jsonwebtoken;
 
 const jwtUtils = {
     generateToken(

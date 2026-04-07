@@ -8,5 +8,6 @@ export default defineConfig((options: Options) => ({
     dts: true,
     minify: true,
     clean: true,
+    external: ["jsonwebtoken"],
     ...options,
 }));

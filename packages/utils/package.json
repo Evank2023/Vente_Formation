@@ -11,6 +11,10 @@
         ".": {
             "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
+        },
+        "./jwt": {
+            "import": "./dist/jwt-utils.mjs",
+            "require": "./dist/jwt-utils.cjs"
         }
     },
     "publishConfig": {

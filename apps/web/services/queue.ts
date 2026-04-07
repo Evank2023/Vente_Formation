@@ -1,8 +1,11 @@
 import { ActivityType } from "@courselit/common-models";
-import { jwtUtils } from "@courselit/utils";
 import { error } from "./logger";
 import nodemailer from "nodemailer";
 import { responses } from "@/config/strings";
+
+async function getJwtUtils() {
+    return (await import("@courselit/utils/jwt")).default;
+}
 
 const queueServer = process.env.QUEUE_SERVER || "http://localhost:4000";
 
@@ -58,6 +61,7 @@ export async function addMailJob({
 }: MailProps) {
     try {
         const jwtSecret = getJwtSecret();
+        const jwtUtils = await getJwtUtils();
         const token = jwtUtils.generateToken({ service: "app" }, jwtSecret);
         const response = await fetch(`${queueServer}/job/mail`, {
             method: "POST",
@@ -127,6 +131,7 @@ export async function addNotificationDispatchJob({
 }) {
     try {
         const jwtSecret = getJwtSecret();
+        const jwtUtils = await getJwtUtils();
         const token = jwtUtils.generateToken(
             {
                 service: "app",

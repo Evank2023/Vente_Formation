@@ -23,7 +23,7 @@ const nextConfig = {
         "@courselit/page-blocks",
         "@courselit/components-library",
     ],
-    serverExternalPackages: ["pug", "liquidjs", "mongoose", "mongodb"],
+    serverExternalPackages: ["pug", "liquidjs", "mongoose", "mongodb", "jsonwebtoken", "@courselit/utils"],
     experimental: {},
 };
 
