@@ -13,7 +13,10 @@ export default interface SiteInfo {
     codeInjectionBody?: string;
     stripeSecret?: string;
     stripeWebhookSecret?: string;
+    paypalClientId?: string;
     paypalSecret?: string;
+    paypalWebhookId?: string;
+    paypalSandbox?: boolean;
     paytmSecret?: string;
     mailingAddress?: string;
     hideCourseLitBranding?: boolean;

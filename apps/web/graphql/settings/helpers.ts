@@ -66,7 +66,7 @@ export const checkForInvalidPaymentMethodSettings = (
 
     if (
         siteInfo.paymentMethod === UIConstants.PAYMENT_METHOD_PAYPAL &&
-        !siteInfo.paypalSecret
+        !(siteInfo.paypalClientId && siteInfo.paypalSecret)
     ) {
         failedPaymentMethod = UIConstants.PAYMENT_METHOD_PAYPAL;
     }

@@ -10,6 +10,9 @@ import {
     SITE_ADMIN_SETTINGS_STRIPE_SECRET,
     SITE_ADMIN_SETTINGS_RAZORPAY_SECRET,
     SITE_ADMIN_SETTINGS_PAYPAL_SECRET,
+    SITE_SETTINGS_PAYPAL_CLIENT_ID_TEXT,
+    SITE_SETTINGS_PAYPAL_WEBHOOK_ID_TEXT,
+    SITE_SETTINGS_PAYPAL_SANDBOX_TEXT,
     SITE_ADMIN_SETTINGS_PAYTM_SECRET,
     SITE_SETTINGS_SECTION_GENERAL,
     SITE_SETTINGS_SECTION_PAYMENT,
@@ -159,6 +162,8 @@ const Settings = (props: SettingsProps) => {
                         paymentMethod,
                         stripeKey,
                         razorpayKey,
+                        paypalClientId,
+                        paypalSandbox,
                         lemonsqueezyStoreId,
                         lemonsqueezyOneTimeVariantId,
                         lemonsqueezySubscriptionMonthlyVariantId,
@@ -203,6 +208,8 @@ const Settings = (props: SettingsProps) => {
             paymentMethod: settingsResponse.paymentMethod || "",
             stripeKey: settingsResponse.stripeKey || "",
             razorpayKey: settingsResponse.razorpayKey || "",
+            paypalClientId: settingsResponse.paypalClientId || "",
+            paypalSandbox: settingsResponse.paypalSandbox ?? false,
             lemonsqueezyStoreId: settingsResponse.lemonsqueezyStoreId || "",
             codeInjectionHead: settingsResponse.codeInjectionHead || "",
             codeInjectionBody: settingsResponse.codeInjectionBody || "",
@@ -252,6 +259,8 @@ const Settings = (props: SettingsProps) => {
                         paymentMethod,
                         stripeKey,
                         razorpayKey,
+                        paypalClientId,
+                        paypalSandbox,
                         lemonsqueezyStoreId,
                         lemonsqueezyOneTimeVariantId,
                         lemonsqueezySubscriptionMonthlyVariantId,
@@ -319,6 +328,8 @@ const Settings = (props: SettingsProps) => {
                         paymentMethod,
                         stripeKey,
                         razorpayKey,
+                        paypalClientId,
+                        paypalSandbox,
                         lemonsqueezyStoreId,
                         lemonsqueezyOneTimeVariantId,
                         lemonsqueezySubscriptionMonthlyVariantId,
@@ -398,6 +409,8 @@ const Settings = (props: SettingsProps) => {
                     paymentMethod,
                     stripeKey,
                     razorpayKey,
+                    paypalClientId,
+                    paypalSandbox,
                     lemonsqueezyStoreId,
                     lemonsqueezyOneTimeVariantId,
                     lemonsqueezySubscriptionMonthlyVariantId,
@@ -463,6 +476,8 @@ const Settings = (props: SettingsProps) => {
                     paymentMethod,
                     stripeKey,
                     razorpayKey,
+                    paypalClientId,
+                    paypalSandbox,
                     lemonsqueezyStoreId,
                     lemonsqueezyOneTimeVariantId,
                     lemonsqueezySubscriptionMonthlyVariantId,
@@ -536,7 +551,11 @@ const Settings = (props: SettingsProps) => {
                 $lemonsqueezyWebhookSecret: String
                 $lemonsqueezyOneTimeVariantId: String,
                 $lemonsqueezySubscriptionMonthlyVariantId: String,
-                $lemonsqueezySubscriptionYearlyVariantId: String
+                $lemonsqueezySubscriptionYearlyVariantId: String,
+                $paypalClientId: String,
+                $paypalSecret: String,
+                $paypalWebhookId: String,
+                $paypalSandbox: Boolean
             ) {
                 settings: updatePaymentInfo(siteData: {
                     currencyISOCode: $currencyISOCode,
@@ -551,7 +570,11 @@ const Settings = (props: SettingsProps) => {
                     lemonsqueezyWebhookSecret: $lemonsqueezyWebhookSecret,
                     lemonsqueezyOneTimeVariantId: $lemonsqueezyOneTimeVariantId,
                     lemonsqueezySubscriptionMonthlyVariantId: $lemonsqueezySubscriptionMonthlyVariantId,
-                    lemonsqueezySubscriptionYearlyVariantId: $lemonsqueezySubscriptionYearlyVariantId
+                    lemonsqueezySubscriptionYearlyVariantId: $lemonsqueezySubscriptionYearlyVariantId,
+                    paypalClientId: $paypalClientId,
+                    paypalSecret: $paypalSecret,
+                    paypalWebhookId: $paypalWebhookId,
+                    paypalSandbox: $paypalSandbox
                 }) {
                     settings {
                         title,
@@ -570,6 +593,8 @@ const Settings = (props: SettingsProps) => {
                         paymentMethod,
                         stripeKey,
                         razorpayKey,
+                        paypalClientId,
+                        paypalSandbox,
                         lemonsqueezyStoreId,
                         lemonsqueezyOneTimeVariantId,
                         lemonsqueezySubscriptionMonthlyVariantId,
@@ -606,6 +631,10 @@ const Settings = (props: SettingsProps) => {
                             newSettings.lemonsqueezySubscriptionMonthlyVariantId,
                         lemonsqueezySubscriptionYearlyVariantId:
                             newSettings.lemonsqueezySubscriptionYearlyVariantId,
+                        paypalClientId: newSettings.paypalClientId,
+                        paypalSecret: newSettings.paypalSecret,
+                        paypalWebhookId: newSettings.paypalWebhookId,
+                        paypalSandbox: newSettings.paypalSandbox,
                     },
                 })
                 .build();
@@ -649,6 +678,8 @@ const Settings = (props: SettingsProps) => {
                         paymentMethod,
                         stripeKey,
                         razorpayKey,
+                        paypalClientId,
+                        paypalSandbox,
                         lemonsqueezyStoreId,
                         lemonsqueezyOneTimeVariantId,
                         lemonsqueezySubscriptionMonthlyVariantId,
@@ -694,9 +725,18 @@ const Settings = (props: SettingsProps) => {
         stripeSecret: getNewSettings
             ? newSettings.stripeSecret
             : settings.stripeSecret,
+        paypalClientId: getNewSettings
+            ? newSettings.paypalClientId
+            : settings.paypalClientId,
         paypalSecret: getNewSettings
             ? newSettings.paypalSecret
             : settings.paypalSecret,
+        paypalWebhookId: getNewSettings
+            ? newSettings.paypalWebhookId
+            : settings.paypalWebhookId,
+        paypalSandbox: getNewSettings
+            ? newSettings.paypalSandbox
+            : settings.paypalSandbox,
         paytmSecret: getNewSettings
             ? newSettings.paytmSecret
             : settings.paytmSecret,
@@ -925,6 +965,16 @@ const Settings = (props: SettingsProps) => {
                                                 !x.lemonsqueezy,
                                         ),
                                     },
+                                    {
+                                        label: "PayPal",
+                                        value: PAYMENT_METHOD_PAYPAL,
+                                        disabled: currencies.some(
+                                            (x) =>
+                                                x.isoCode ===
+                                                    newSettings.currencyISOCode?.toUpperCase() &&
+                                                !(x as any).paypal,
+                                        ),
+                                    },
                                 ]}
                                 onChange={(value) =>
                                     setNewSettings(
@@ -1104,14 +1154,49 @@ const Settings = (props: SettingsProps) => {
                         )}
                         {newSettings.paymentMethod ===
                             PAYMENT_METHOD_PAYPAL && (
-                            <FormField
-                                label={SITE_ADMIN_SETTINGS_PAYPAL_SECRET}
-                                name="paypalSecret"
-                                type="password"
-                                value={newSettings.paypalSecret || ""}
-                                onChange={onChangeData}
-                                disabled={true}
-                            />
+                            <>
+                                <FormField
+                                    label={SITE_SETTINGS_PAYPAL_CLIENT_ID_TEXT}
+                                    name="paypalClientId"
+                                    value={newSettings.paypalClientId || ""}
+                                    onChange={onChangeData}
+                                />
+                                <FormField
+                                    label={SITE_ADMIN_SETTINGS_PAYPAL_SECRET}
+                                    name="paypalSecret"
+                                    type="password"
+                                    value={newSettings.paypalSecret || ""}
+                                    onChange={onChangeData}
+                                    autoComplete="off"
+                                />
+                                <FormField
+                                    label={SITE_SETTINGS_PAYPAL_WEBHOOK_ID_TEXT}
+                                    name="paypalWebhookId"
+                                    value={newSettings.paypalWebhookId || ""}
+                                    onChange={onChangeData}
+                                />
+                                <div className="flex items-center gap-2">
+                                    <Checkbox
+                                        checked={Boolean(
+                                            newSettings.paypalSandbox,
+                                        )}
+                                        onChange={(value: boolean) => {
+                                            setNewSettings(
+                                                Object.assign(
+                                                    {},
+                                                    newSettings,
+                                                    {
+                                                        paypalSandbox: value,
+                                                    },
+                                                ),
+                                            );
+                                        }}
+                                    />
+                                    <span className="text-sm">
+                                        {SITE_SETTINGS_PAYPAL_SANDBOX_TEXT}
+                                    </span>
+                                </div>
+                            </>
                         )}
                         {newSettings.paymentMethod === PAYMENT_METHOD_PAYTM && (
                             <FormField

@@ -30,6 +30,7 @@ export const getSiteInfo = async (ctx: GQLContext) => {
         "settings.stripeSecret": 0,
         "settings.paytmSecret": 0,
         "settings.paypalSecret": 0,
+        "settings.paypalWebhookId": 0,
         "settings.razorpaySecret": 0,
         "settings.razorpayWebhookSecret": 0,
     };

@@ -4,6 +4,7 @@ import DomainModel, { Domain } from "../models/Domain";
 import StripePayment from "./stripe-payment";
 import RazorpayPayment from "./razorpay-payment";
 import LemonSqueezyPayment from "./lemonsqueezy-payment";
+import PaypalPayment from "./paypal-payment";
 
 const {
     error_unrecognised_payment_method: unrecognisedPaymentMethod,
@@ -29,7 +30,7 @@ export const getPaymentMethodFromSettings = async (
 
     switch (name || siteInfo.paymentMethod) {
         case UIConstants.PAYMENT_METHOD_PAYPAL:
-            throw new Error(notYetSupported);
+            return await new PaypalPayment(siteInfo).setup();
         case UIConstants.PAYMENT_METHOD_STRIPE:
             return await new StripePayment(siteInfo).setup();
         case UIConstants.PAYMENT_METHOD_RAZORPAY:
